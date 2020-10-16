@@ -6,7 +6,7 @@
 + Các trường hợp còn lại return về điểm đang có + 1 / (khoảng cách ngắn nhất đến food)
 + Do food càng gần thì càng đánh giá cao => evalution cao => cần lây nghịch đảo
 # Giải thuật
-
+```
 minPosFood = float('inf')
 for food in newFood.asList():
   minPosFood = min(minPosFood,manhattanDistance(newPos,food))
@@ -18,7 +18,7 @@ cost = minPosFood
 if(minPosGhost <= 1):
   cost = -float('inf')
 return successorGameState.getScore() + 1.0/cost
-
+```
 # Question 2 (5 points): Minimax
 # ý tưởng: cài hàm minimax
 + Hàm trả về evalution của node và hướng đi
@@ -31,6 +31,7 @@ return successorGameState.getScore() + 1.0/cost
 + giải thuật theo đề quy
 
 + Giải thuật
+```
 def minimax(self, gameState, agent, depth):
   if not gameState.getLegalActions(agent):
       return self.evaluationFunction(gameState),0
@@ -65,7 +66,7 @@ def minimax(self, gameState, agent, depth):
               best[0] = new[0]
               best[1] = action
       return best
-      
+```
 # Question 3 (5 points): Alpha-Beta Pruning
 # Ý tưởng: về cơ bản giống minimax; nhưng có thêm hai tham số alpha và beta
 + alpha là lựa chọn tốt nhất của max cho root
@@ -74,6 +75,7 @@ def minimax(self, gameState, agent, depth):
                                   + ở mỗi lần duyệt sẽ tìm ra giá trị max và gán cho a.
 + tương tự với trường hợp của các con ma.
 # giải thuật;
+```
 def alphaBeta(self, gameState, agent, depth, a, b):
   if not gameState.getLegalActions(agent):
       return self.evaluationFunction(gameState),0
@@ -114,12 +116,13 @@ def alphaBeta(self, gameState, agent, depth, a, b):
               return best
           b = min(best[0], b)
       return best
+ ```
 # Question 4 (5 points): Expectimax
 
 # ý tưởng: tương tự minimax; chỉ khác ở trường hợp của các con ma:
 + Thay vì tìm giá trị min của các node ở dưới thì ở đây ta sẽ lấy trung bình evalution của chúng. ta chỉ lấy một action để xét (action cuối cùng)
 # giải thuật :
-
+```
 def expectimax(self, gameState, agent, depth):
   if not gameState.getLegalActions(agent):
       return self.evaluationFunction(gameState),0
@@ -150,18 +153,18 @@ def expectimax(self, gameState, agent, depth):
       best.append(0)
       for action in gameState.getLegalActions(agent):
           new = self.expectimax(gameState.generateSuccessor(agent,action),newAgent,depth)
-
+          
           best[0] = best[0] + (1.0/len(gameState.getLegalActions(agent))) * new[0]
           best[1] = action
       return best
-      
+ ```
 # Question 5 (6 points): Evaluation Function
 # ý tưởng: khá giống bài 1.
 + Tuy nhiên nhận thấy khi ma cách xa pacman; nó hay dừng lại không làm gì
 + do đó; trong trường hợp con ma không quá gần pacman; thì evalution của ta sẽ trừ đi khoảng cách từ ma đến pacman nhỏ nhất
 + từ đó pacman sẽ không dính phải trường hợp đứng yên
 # giải thuật:
-
+```
 newPos = currentGameState.getPacmanPosition()
 newFood = currentGameState.getFood()
 newGhostStates = currentGameState.getGhostStates()
